@@ -114,12 +114,13 @@ IssueTrackingSystem::removeEmployee(const std::string name) {
     if (!findEmployee(name, &index)) {
         std::cout << "Cannot remove employee. There is no employee with name "
             << name << ".\n";
+        return;
     }
 
     const Employee &e = employees.at(index);
     if (e.issues.length() != 0) {
         std::cout << "Cannot remove employee. "
-            << e.name << " has assigned issued.\n";
+            << e.name << " has assigned issues.\n";
         return;
     }
 
@@ -164,16 +165,16 @@ IssueTrackingSystem::addIssue(
     const std::string description,
     const std::string assigneeName
 ) {
-    if (findIssue(issueId)) {
-        std::cout << "Cannot add issue. Issue with ID "
-            << issueId << " already exists.\n";
-        return;
-    }
-
     Employee* employee = findEmployee(assigneeName, nullptr);
     if (!employee) {
         std::cout << "Cannot add issue. There is no employee with name "
             << assigneeName << ".\n";
+        return;
+    }
+
+    if (findIssue(issueId)) {
+        std::cout << "Cannot add issue. Issue with ID "
+            << issueId << " already exists.\n";
         return;
     }
 
@@ -213,7 +214,7 @@ IssueTrackingSystem::changeAssignee(
     }
 
     if (!oldEmployee || !newEmployee) {
-        std::cout << "Cannot change assignee. Previous and/or new assignee does not exist.\n";
+        std::cout << "Cannot change assignee. Previous or/and new assignee does not exist.\n";
         return;
     }
 
@@ -226,8 +227,8 @@ IssueTrackingSystem::changeAssignee(
         oldEmployee->issues.remove(i);
     }
 
-    std::cout << "Changed assignee from " << previousAssignee
-        << " to " << newAssignee << ".\n";
+    std::cout << previousAssignee << "'s issues are transferred to "
+        << newAssignee << ".\n";
 }
 
 void

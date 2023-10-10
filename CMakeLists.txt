@@ -11,7 +11,7 @@ option(BUILD_TESTS "Build the tests" ON)
 
 set(CMAKE_CXX_FLAGS "-Wall -Wextra -Werror")
 set(CMAKE_CXX_FLAGS_DEBUG "-g -O0 -fsanitize=address")
-set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -march=native -DNDEBUG")
 
 if(BUILD_TESTS)
     add_subdirectory(tests)

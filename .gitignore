@@ -37,6 +37,7 @@ build/
 # CodeQL files
 codeql/
 _codeql*/
+_codeql*
 
 # Log files
 *.log

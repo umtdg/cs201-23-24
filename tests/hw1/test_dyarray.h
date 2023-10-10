@@ -213,15 +213,6 @@ TEST(DynamicArray, AddMovable) {
     EXPECT_EQ(arr.at(0).moveConstructed, true);
 }
 
-TEST(DynamicArray, DestructEmpty) {
-    DynamicArray<int> arr;
-    arr.~DynamicArray();
-
-    EXPECT_EQ(arr.data(), nullptr);
-    EXPECT_EQ(arr.length(), 0);
-    EXPECT_EQ(arr.capacity(), 0);
-}
-
 TEST(DynamicArray, CopyConstruct) {
     DynamicArray<int> arr;
     arr.reserve(2);

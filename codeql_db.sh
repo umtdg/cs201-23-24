@@ -17,7 +17,15 @@ if [ -f "$codeql_log" ]; then
 fi
 
 echo "[+] Creating CodeQL database"
-codeql database create --language=cpp "$codeql_db" >"$codeql_log" 2>&1
+create_opts=(
+    database
+    create
+    --language=cpp
+    --command="cmake --build build --config Debug --clean-first"
+    "$codeql_db"
+)
+
+codeql "${create_opts[@]}" >>"$codeql_log" 2>&1
 
 echo "[+] Create CodeQL results directory"
 mkdir -p codeql_results
@@ -31,13 +39,14 @@ for query in "${queries[@]}"; do
     options=(
         database
         analyze
+        --threads=16
         --format=csv
         "--output=${codeql_results_dir}/${query_name}.csv"
         "$codeql_db"
         "$query"
     )
 
-    codeql "${options[@]}" >"$codeql_log" 2>&1
+    codeql "${options[@]}" >>"$codeql_log" 2>&1
 done
 
 echo "[+] Remove CodeQL database"

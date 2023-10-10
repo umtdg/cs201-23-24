@@ -12,6 +12,7 @@
 				"github.copilot",
 				"qiumingge.cpp-check-lint",
 				"ms-vscode.cmake-tools",
+				"ms-vscode.cpptools-extension-pack",
 			]
 		}
 	}
