@@ -30,3 +30,13 @@
 *.exe
 *.out
 *.app
+
+# CMake files
+build/
+
+# CodeQL files
+codeql/
+_codeql*/
+
+# Log files
+*.log

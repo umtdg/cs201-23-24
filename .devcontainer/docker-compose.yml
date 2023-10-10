@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  cs201-23-24:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      network: host
+    image: "umtdg/cs201-23-24:dev"
+    container_name: "cs201-23-24-dev"
+    privileged: false
+    volumes:
+      - ../:/source
