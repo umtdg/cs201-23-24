@@ -41,3 +41,6 @@ _codeql*
 
 # Log files
 *.log
+
+# Assignment uploads
+*.zip
