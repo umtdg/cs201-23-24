@@ -33,7 +33,7 @@ private:
     DynamicArray<Employee> employees;
 
 public:
-    IssueTrackingSystem() = default;
+    IssueTrackingSystem() : employees(1, true) {}
     ~IssueTrackingSystem() = default;
 
     IssueTrackingSystem(const IssueTrackingSystem& other) = default;

@@ -114,6 +114,36 @@ TEST(DynamicArray, ReserveWithData) {
     EXPECT_EQ(arr.capacity(), 4);
 }
 
+TEST(DynamicArray, ShrinkToFitWithoutData) {
+    DynamicArray<int> arr;
+    arr.reserve(10);
+    arr.shrink_to_fit();
+
+    EXPECT_NE(arr.data(), nullptr);
+    EXPECT_EQ(arr.length(), 0);
+    EXPECT_EQ(arr.capacity(), 0);
+}
+
+TEST(DynamicArray, ShrinkToFitWithData) {
+    DynamicArray<int> arr;
+    arr.reserve(10);
+    arr.add(1);
+    arr.add(2);
+    arr.add(3);
+    arr.add(4);
+    arr.add(5);
+
+    EXPECT_NE(arr.data(), nullptr);
+    EXPECT_EQ(arr.length(), 5);
+    EXPECT_EQ(arr.capacity(), 10);
+
+    arr.shrink_to_fit();
+
+    EXPECT_NE(arr.data(), nullptr);
+    EXPECT_EQ(arr.length(), 5);
+    EXPECT_EQ(arr.capacity(), 5);
+}
+
 TEST(DynamicArray, AddToEmpty) {
     DynamicArray<int> arr;
     arr.add(1);
@@ -211,6 +241,22 @@ TEST(DynamicArray, AddMovable) {
 
     EXPECT_EQ(arr.at(0).x, 1);
     EXPECT_EQ(arr.at(0).moveConstructed, true);
+}
+
+TEST(DynamicArray, AddWithGrowthRate) {
+    DynamicArray<int> arr(2, false);
+    arr.add(1);
+
+    EXPECT_NE(arr.data(), nullptr);
+    EXPECT_EQ(arr.length(), 1);
+    EXPECT_EQ(arr.capacity(), 2);
+
+    arr.add(2);
+    arr.add(3);
+
+    EXPECT_NE(arr.data(), nullptr);
+    EXPECT_EQ(arr.length(), 3);
+    EXPECT_EQ(arr.capacity(), 4);
 }
 
 TEST(DynamicArray, CopyConstruct) {
@@ -436,6 +482,43 @@ TEST(DynamicArray, Remove) {
     EXPECT_EQ(arr.data(), data);
     EXPECT_EQ(arr.length(), 2);
     EXPECT_EQ(arr.capacity(), 5);
+    EXPECT_EQ(arr.at(0), 2);
+    EXPECT_EQ(arr.at(1), 4);
+}
+
+TEST(DynamicArray, RemoveWithShrink) {
+    DynamicArray<int> arr(0, true);
+    arr.reserve(5);
+    arr.add(1);
+    arr.add(2);
+    arr.add(3);
+    arr.add(4);
+    arr.add(5);
+
+    arr.remove(0);
+
+    EXPECT_NE(arr.data(), nullptr);
+    EXPECT_EQ(arr.length(), 4);
+    EXPECT_EQ(arr.capacity(), 4);
+    EXPECT_EQ(arr.at(0), 2);
+    EXPECT_EQ(arr.at(1), 3);
+    EXPECT_EQ(arr.at(2), 4);
+    EXPECT_EQ(arr.at(3), 5);
+
+    arr.remove(3);
+
+    EXPECT_NE(arr.data(), nullptr);
+    EXPECT_EQ(arr.length(), 3);
+    EXPECT_EQ(arr.capacity(), 3);
+    EXPECT_EQ(arr.at(0), 2);
+    EXPECT_EQ(arr.at(1), 3);
+    EXPECT_EQ(arr.at(2), 4);
+
+    arr.remove(1);
+
+    EXPECT_NE(arr.data(), nullptr);
+    EXPECT_EQ(arr.length(), 2);
+    EXPECT_EQ(arr.capacity(), 2);
     EXPECT_EQ(arr.at(0), 2);
     EXPECT_EQ(arr.at(1), 4);
 }
