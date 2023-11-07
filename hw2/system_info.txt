@@ -1,0 +1,7 @@
+OS: Arch Linux x86_64
+Kernel: 6.1.61-1-lts
+CPU: 1-core @ 4.4 GHz / 8-cores @ 3.6 GHz
+RAM: Dual-channel 3200 MT/s
+
+Compiler: g++ (GCC) 13.2.1 20230801
+Compile options: -std=gnu++14 -O3 -march=native -DNDEBUG

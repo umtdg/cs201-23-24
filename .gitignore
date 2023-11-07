@@ -44,3 +44,8 @@ _codeql*
 
 # Assignment uploads
 *.zip
+
+# Python files
+*.pyc
+__pycache__/
+*_env/

@@ -1,4 +1,7 @@
 # googletest
+if(MSVC)
+    set(GTEST_ROOT "E:/VS/libraries/googletest-distrib/lib/")
+endif()
 find_package(GTest REQUIRED)
 
 enable_testing()

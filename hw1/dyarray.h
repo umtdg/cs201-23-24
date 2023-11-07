@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <iostream>
 #include <stdexcept>
+#include <utility>
 
 template <typename T>
 class DynamicArray {
