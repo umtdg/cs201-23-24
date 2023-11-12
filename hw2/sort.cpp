@@ -31,7 +31,7 @@ void bubble_sort(int *data, size_t n) {
 // quicksort - Hoare partition scheme - in place - ascending
 // https://en.wikipedia.org/wiki/Quicksort#Hoare_partition_scheme
 size_t qs_partition(int *data, size_t lo, size_t hi) {
-    size_t pivot = data[(size_t)floor((hi - lo)/2.0) + lo];
+    int pivot = data[(size_t)floor((hi - lo)/2.0) + lo];
 
     size_t i = lo - 1; // left index
     size_t j = hi + 1; // right index

@@ -71,17 +71,62 @@ def profile_subprocess(interval, *args, **kwargs) -> (int, int):
     else:
         return int(proc.stdout.read()), max_mem_used
 
+def negate(arr: np.ndarray, start, end) -> np.ndarray:
+    part = np.negative(arr[start:end])
+    return part
+
+def reverse(arr: np.ndarray, start, end) -> np.ndarray:
+    part = np.flip(arr[start:end])
+    return part
+
+def swap(arr: np.ndarray, i1, i2) -> np.ndarray:
+    arr[i1], arr[i2] = arr[i2], arr[i1]
+    return arr[i1:i2]
+
+def sorted2almost(arr: np.ndarray):
+    shuffle_funcs = [
+        negate,
+        reverse,
+        swap
+    ]
+
+    max_block_size = int(np.log(len(arr)))
+    n = len(arr)
+
+    for _ in range(int(np.log(n))):
+        shuffle_func = np.random.choice(shuffle_funcs)
+        start = np.random.randint(0, n)
+
+        end = start + max_block_size
+        end = np.clip(end, 0, n-1)
+
+        arr[start:end] = shuffle_func(arr, start, end)
+
+def gen_samples(sample_size: int, number_of_runs: int,
+                with_sorted: bool = False, descending: bool = False,
+                almost_sorted: bool = False):
+    samples = np.random.randint(0, 2147483647, (number_of_runs, sample_size))
+    if with_sorted or descending or almost_sorted:
+        samples = np.sort(samples, axis=1)
+
+    if descending:
+        samples = np.flip(samples, axis=1)
+
+    if almost_sorted:
+        for sample in samples:
+            sorted2almost(sample)
+
+    return samples
+
 def benchmark(
         executable: str, sort_method: str, data_file: str,
-        sample_size: int, number_of_runs: int, with_sorted: bool = False, descending: bool = False):
+        sample_size: int, number_of_runs: int, with_sorted: bool = False,
+        descending: bool = False, almost_sorted: bool = False):
     logging.debug(f"Generating samples of size {number_of_runs}x{sample_size}")
-    samples = np.random.randint(0, 2147483647, (number_of_runs, sample_size))
     exec_args = [executable, sort_method, data_file, str(sample_size)]
 
-    if with_sorted:
-        samples = np.sort(samples, axis=1)
-        if descending:
-            samples = np.flip(samples, axis=1)
+    samples = gen_samples(sample_size, number_of_runs, with_sorted,
+                          descending, almost_sorted)
 
     times = []
     memory_usages = []
@@ -114,7 +159,8 @@ def batch_benchmark(args):
             )
             result = benchmark(
                 args.executable, sort_method, args.file, sample_size,
-                number_of_runs, args.asc or args.desc, args.desc
+                number_of_runs, args.asc or args.desc,
+                args.desc, args.almost
             )
 
             row_time.append(round(result[2], 2))
@@ -134,6 +180,7 @@ def create_parser() -> argparse.ArgumentParser:
     data_type_group = parser.add_mutually_exclusive_group(required=True)
     data_type_group.add_argument("--asc", action="store_true")
     data_type_group.add_argument("--desc", action="store_true")
+    data_type_group.add_argument("--almost", action="store_true")
     data_type_group.add_argument("--random", action="store_true")
 
     return parser
@@ -150,7 +197,11 @@ def main():
         handlers=[RichHandler(omit_repeated_times=False)]
     )
 
-    args.data_type = "ascending" if args.asc else "descending" if args.desc else "random"
+    args.data_type = "random"
+    if args.asc: args.data_type = "ascending"
+    if args.desc: args.data_type = "descending"
+    if args.almost: args.data_type = "almost sorted"
+
     benchmark_results_time, benchmark_results_memory = batch_benchmark(args)
 
     benchmark_results_time.to_csv(f"benchmark_results_time_{args.data_type}.csv", index=False)
