@@ -17,15 +17,6 @@ import subprocess as sp
 import pandas as pd
 import numpy as np
 
-# matplotlib
-import matplotlib
-matplotlib.use("GTK3Agg")
-import matplotlib.pyplot as plt
-
-import gi
-gi.require_version("Gtk", "3.0")
-from gi.repository import Gtk
-
 
 sample_sizes = [
     (64, 500),
@@ -90,14 +81,17 @@ def sorted2almost(arr: np.ndarray):
         swap
     ]
 
-    max_block_size = int(np.log(len(arr)))
+    # max_block_size = int(np.log(len(arr)))
     n = len(arr)
+    # no_ops = int(np.log(n))
+    no_ops = 4
+    max_block_size = no_ops
 
     for _ in range(int(np.log(n))):
         shuffle_func = np.random.choice(shuffle_funcs)
         start = np.random.randint(0, n)
 
-        end = start + max_block_size
+        end = start + np.random.randint(0, max_block_size)
         end = np.clip(end, 0, n-1)
 
         arr[start:end] = shuffle_func(arr, start, end)
