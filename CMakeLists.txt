@@ -23,9 +23,7 @@ if(BUILD_TESTS)
     add_subdirectory(tests)
 endif()
 
-set(CMAKE_VERBOSE_MAKEFILE ON)
-
-
 # Add hw subdirectories
 add_subdirectory(hw1)
 add_subdirectory(hw2)
+add_subdirectory(hw3)
