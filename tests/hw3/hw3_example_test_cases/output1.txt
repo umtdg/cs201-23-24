@@ -1,0 +1,43 @@
+Regular users in the social media platform:
+None
+
+Content creators in the social media platform:
+None
+
+Cannot remove content creator. There is no content creator with ID 2.
+Added content creator 2.
+Cannot add content creator. There is already a content creator with ID 2.
+Added content creator 1.
+Cannot add content creator. There is already a content creator with ID 1.
+Added content creator 9.
+Added content creator 8.
+Added content creator 7.
+Added content creator 5.
+Added content creator 4.
+Regular users in the social media platform:
+None
+
+Content creators in the social media platform:
+1, Burak, 0 follower(s), 0 content(s)
+2, Ali, 0 follower(s), 0 content(s)
+4, Ela, 0 follower(s), 0 content(s)
+5, Merve, 0 follower(s), 0 content(s)
+7, Sena, 0 follower(s), 0 content(s)
+8, Furkan, 0 follower(s), 0 content(s)
+9, Omer, 0 follower(s), 0 content(s)
+
+Cannot remove content creator. There is no content creator with ID 3.
+Removed content creator 1.
+Cannot remove content creator. There is no content creator with ID 1.
+Removed content creator 8.
+
+Regular users in the social media platform:
+None
+
+Content creators in the social media platform:
+2, Ali, 0 follower(s), 0 content(s)
+4, Ela, 0 follower(s), 0 content(s)
+5, Merve, 0 follower(s), 0 content(s)
+7, Sena, 0 follower(s), 0 content(s)
+9, Omer, 0 follower(s), 0 content(s)
+

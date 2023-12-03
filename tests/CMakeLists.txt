@@ -12,6 +12,8 @@ link_libraries(
     ${GTEST_MAIN_LIBRARIES}
     pthread
     hw1
+    smp
 )
 
 add_subdirectory(hw1)
+add_subdirectory(hw3)

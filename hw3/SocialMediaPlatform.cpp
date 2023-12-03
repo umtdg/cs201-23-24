@@ -50,7 +50,9 @@ void SocialMediaPlatform::addContentCreator(const int id, const std::string name
 }
 
 void SocialMediaPlatform::removeContentCreator(const int id) {
-    auto creatorNode = _creators.find(ContentCreator(id, ""));
+    ContentCreator creator(id, "");
+
+    auto creatorNode = _creators.find(creator);
     if (creatorNode == nullptr) {
         std::cout << "Cannot remove content creator. There is no content creator with ID "
                     << id << ".\n";
@@ -62,6 +64,7 @@ void SocialMediaPlatform::removeContentCreator(const int id) {
         _contents.remove(Content(node->value, ""));
     }
 
+    _creators.remove(creator);
     std::cout << "Removed content creator " << id << ".\n";
 }
 
