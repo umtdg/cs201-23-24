@@ -220,11 +220,11 @@ IssueTrackingSystem::changeAssignee(
 
     size_t nIssues = oldEmployee->issues.length();
     for (size_t i = 0; i < nIssues; i++) {
-        Issue& issue = oldEmployee->issues.at(i);
+        Issue& issue = oldEmployee->issues.at(0);
         issue.asignee = newAssignee;
 
         newEmployee->issues.add(issue);
-        oldEmployee->issues.remove(i);
+        oldEmployee->issues.remove(0);
     }
 
     std::cout << previousAssignee << "'s issues are transferred to "
