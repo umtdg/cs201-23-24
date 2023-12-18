@@ -154,15 +154,42 @@ class DynamicArray {
             if (_shrinkOnRemove) shrink_to_fit();
         }
 
-        T& at(size_t index) {
+        T& at(size_t index) { return this[index]; }
+        const T& at(size_t index) const { return this[index]; }
+
+        T& operator[](size_t index) {
             if (index >= _length) throw std::out_of_range("Index out of range");
 
             return buffer[index];
         }
-        const T& at(size_t index) const {
+        const T& operator[](size_t index) const {
             if (index >= _length) throw std::out_of_range("Index out of range");
 
             return buffer[index];
+        }
+
+        int find(const T& value) const {
+            for (size_t i = 0; i < _length; i++) {
+                if (buffer[i] == value) return i;
+            }
+
+            return -1;
+        }
+
+        void sort() {
+            bool swapped;
+            size_t n = _length;
+            do {
+                swapped = false;
+                for (size_t i = 1; i < n; i++) {
+                    if (buffer[i - 1] > buffer[i]) {
+                        // Swap the elements
+                        std::swap(buffer[i - 1], buffer[i]);
+                        swapped = true;
+                    }
+                }
+                n--; // Reduce the range of unsorted elements
+            } while (swapped);
         }
 
         size_t length() const noexcept { return _length; }
@@ -170,6 +197,19 @@ class DynamicArray {
 
         T* data() noexcept { return buffer; }
         const T* data() const noexcept { return buffer; }
+
+        void display(const std::string& delim="\n", bool print_none_if_empty=false,
+                    bool print_denim_on_last=true) const {
+            if (_length == 0 && print_none_if_empty) {
+                std::cout << "None\n";
+                return;
+            }
+
+            for (size_t i = 0; i < _length; i++) {
+                std::cout << buffer[i];
+                if (i != _length - 1 || print_denim_on_last) std::cout << delim;
+            }
+        }
 
     private:
 #if __cplusplus == 201103L || __cplusplus == 201402L

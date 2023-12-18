@@ -144,15 +144,15 @@ class sorted_list {
             return true;
         }
 
-        void display() const {
-            if (_length == 0) {
+        void display(const std::string& delim="\n", bool print_none_if_empty=false) const {
+            if (_length == 0 && print_none_if_empty) {
                 std::cout << "None\n";
                 return;
             }
 
             list_node<T> *current = _head;
             while (current != nullptr) {
-                std::cout << current->value << '\n';
+                std::cout << current->value << delim;
                 current = current->next;
             }
         }
