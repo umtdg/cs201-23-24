@@ -76,6 +76,10 @@ class path {
             std::cout << "Live probability: " << _live_prob << "\n";
         }
 
+        bool empty() const {
+            return _cages.empty();
+        }
+
         const float live_prob() const { return _live_prob; }
 
         bool operator<(const path& other) const {

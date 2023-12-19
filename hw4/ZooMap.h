@@ -13,6 +13,12 @@ class ZooMap {
         void read_cage_file(const std::string& cage_file);
         void read_zoo_file(const std::string& zoo_file);
 
+        void find_path(
+            const std::string& startCage,
+            const std::string& endCage,
+            bool find_safest=true
+        );
+
     public:
         ZooMap(const std::string cageFile, const std::string zooFile);
         ~ZooMap() = default;

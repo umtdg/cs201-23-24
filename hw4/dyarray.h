@@ -198,6 +198,10 @@ class DynamicArray {
         T* data() noexcept { return buffer; }
         const T* data() const noexcept { return buffer; }
 
+        bool empty() const {
+            return _length == 0;
+        }
+
         void display(const std::string& delim="\n", bool print_none_if_empty=false,
                     bool print_denim_on_last=true) const {
             if (_length == 0 && print_none_if_empty) {

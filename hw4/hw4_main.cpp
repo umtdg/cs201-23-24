@@ -23,7 +23,16 @@ int main() {
     zoo_map.findSafestPath("D", "C");
     std::cout << "\n";
 
-    zoo_map.findSafestPath("E", "E");
+    zoo_map.findMostDangerousPath("E", "A");
+    std::cout << "\n";
+
+    zoo_map.findMostDangerousPath("D", "C");
+    std::cout << "\n";
+
+    zoo_map.findSafestPath("C", "F");
+    std::cout << "\n";
+
+    zoo_map.findMostDangerousPath("C", "F");
     std::cout << "\n";
 
     return 0;
