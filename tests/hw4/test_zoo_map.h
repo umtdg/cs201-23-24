@@ -62,10 +62,10 @@ TEST(ZooMap, TestDisplayMap) {
 
 TEST(ZooMap, TestZeroOrOnePath_Safest) {
     const std::string expected_output = "6 cages and 9 connections have been loaded.\n\n"
-    "No path exists from C to F.\n\n"
-    "Safest path from E to D is:\n"
-    "E -> D\n"
-    "Probability: 0.031500\n\n";
+        "No path exists from C to F.\n\n"
+        "Safest path from E to D is:\n"
+        "E -> D\n"
+        "Probability: 0.031500\n\n";
 
     testing::internal::CaptureStdout();
 
@@ -85,10 +85,10 @@ TEST(ZooMap, TestZeroOrOnePath_Safest) {
 
 TEST(ZooMap, TestZeroOrOnePath_MostDangerous) {
     const std::string expected_output = "6 cages and 9 connections have been loaded.\n\n"
-    "No path exists from C to F.\n\n"
-    "Most dangerous path from E to D is:\n"
-    "E -> D\n"
-    "Probability: 0.031500\n\n";
+        "No path exists from C to F.\n\n"
+        "Most dangerous path from E to D is:\n"
+        "E -> D\n"
+        "Probability: 0.031500\n\n";
 
     testing::internal::CaptureStdout();
 
