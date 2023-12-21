@@ -13,7 +13,7 @@
 #include <utility>
 
 template <typename T>
-class DynamicArray {
+class dyarray {
     protected:
         T *buffer;
         size_t _capacity;
@@ -22,11 +22,11 @@ class DynamicArray {
         bool _shrinkOnRemove;
 
     public:
-        DynamicArray(size_t growthRate = 0, bool shrinkOnRemove = false)
+        dyarray(size_t growthRate = 0, bool shrinkOnRemove = false)
             : buffer(nullptr), _capacity(0), _length(0),
             _growthRate(growthRate), _shrinkOnRemove(shrinkOnRemove)
         {}
-        ~DynamicArray() {
+        ~dyarray() {
             if (buffer != nullptr) {
                 delete[] buffer;
                 buffer = nullptr;
@@ -37,7 +37,7 @@ class DynamicArray {
             _shrinkOnRemove = false;
         }
 
-        DynamicArray(const DynamicArray& other) {
+        dyarray(const dyarray& other) {
             _capacity = other._capacity;
             _length = other._length;
             _growthRate = other._growthRate;
@@ -48,7 +48,7 @@ class DynamicArray {
                 buffer[i] = other.buffer[i];
             }
         }
-        DynamicArray(DynamicArray&& other) noexcept {
+        dyarray(dyarray&& other) noexcept {
             if (this == &other) return;
 
             _capacity = std::exchange(other._capacity, 0);
@@ -59,7 +59,7 @@ class DynamicArray {
             buffer = std::exchange(other.buffer, nullptr);
         }
 
-        DynamicArray& operator=(const DynamicArray& other) {
+        dyarray& operator=(const dyarray& other) {
             if (this == &other) return *this;
 
             _capacity = other._capacity;
@@ -75,7 +75,7 @@ class DynamicArray {
 
             return *this;
         }
-        DynamicArray& operator=(DynamicArray&& other) noexcept {
+        dyarray& operator=(dyarray&& other) noexcept {
             if (this == &other) return *this;
 
             _capacity = std::exchange(other._capacity, 0);

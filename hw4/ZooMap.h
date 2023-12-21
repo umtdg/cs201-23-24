@@ -13,7 +13,7 @@
 
 class ZooMap {
     private:
-        DynamicArray<cage> _cages;
+        dyarray<cage> _cages;
         size_t _num_conns = 0;
 
         void read_cage_file(const std::string& cage_file);

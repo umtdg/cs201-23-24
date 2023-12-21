@@ -14,7 +14,7 @@
 template <typename T>
 class stack {
     private:
-        DynamicArray<T> _c;
+        dyarray<T> _c;
 
     public:
         T& top() { return _c.back(); }

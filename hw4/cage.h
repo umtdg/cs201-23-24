@@ -62,7 +62,7 @@ class cage {
 
 class path {
     private:
-        DynamicArray<std::string> _cages;
+        dyarray<std::string> _cages;
         float _live_prob;
 
     public:
