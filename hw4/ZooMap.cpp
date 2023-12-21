@@ -93,20 +93,19 @@ void ZooMap::read_zoo_file(const std::string& zoo_file) {
 }
 
 void ZooMap::find_path(const std::string& startCage, const std::string& endCage, bool find_safest) {
-    cage& start = _cages[_cages.find(cage(startCage, 0.0f))];
     cage& end = _cages[_cages.find(cage(endCage, 0.0f))];
 
     // Use a DFS using stack to find all paths from start to end
     // and keep track of the safest path
     path found_path(find_safest ? 0.0f : 1.0f);
-    stack<std::pair<path, cage>> dfs_stack;
+    stack<std::pair<path, std::string>> dfs_stack;
 
-    dfs_stack.push({path{}, start});
+    dfs_stack.push({path{}, startCage});
 
     while(!dfs_stack.empty()) {
         auto dfs_top = dfs_stack.top();
         path p = dfs_top.first;
-        cage c = dfs_top.second;
+        cage& c = _cages[_cages.find(cage(dfs_top.second, 0.0f))];
 
         dfs_stack.pop();
 
@@ -124,7 +123,7 @@ void ZooMap::find_path(const std::string& startCage, const std::string& endCage,
         // Add all adjacent cages to stack
         const auto* adj = c.adjacent_cages().head();
         while (adj != nullptr) {
-            dfs_stack.push({p, _cages[_cages.find(cage(adj->value, 0.0f))]});
+            dfs_stack.push({p, adj->value});
             adj = adj->next;
         }
     }

@@ -23,11 +23,11 @@ class DynamicArray {
 
     public:
         DynamicArray(size_t growthRate = 0, bool shrinkOnRemove = false)
-            : buffer(new T[0]), _capacity(0), _length(0),
+            : buffer(nullptr), _capacity(0), _length(0),
             _growthRate(growthRate), _shrinkOnRemove(shrinkOnRemove)
         {}
         ~DynamicArray() {
-            if (buffer) {
+            if (buffer != nullptr) {
                 delete[] buffer;
                 buffer = nullptr;
             }
@@ -48,18 +48,32 @@ class DynamicArray {
                 buffer[i] = other.buffer[i];
             }
         }
-        DynamicArray(DynamicArray&& other) noexcept
-            : buffer(std::exchange(other.buffer, nullptr)),
-                _capacity(std::exchange(other._capacity, 0)),
-                _length(std::exchange(other._length, 0)),
-                _growthRate(std::exchange(other._growthRate, 0)),
-                _shrinkOnRemove(std::exchange(other._shrinkOnRemove, false))
-        {}
+        DynamicArray(DynamicArray&& other) noexcept {
+            if (this == &other) return;
+
+            _capacity = std::exchange(other._capacity, 0);
+            _length = std::exchange(other._length, 0);
+            _growthRate = std::exchange(other._growthRate, 0);
+            _shrinkOnRemove = std::exchange(other._shrinkOnRemove, false);
+
+            buffer = std::exchange(other.buffer, nullptr);
+        }
 
         DynamicArray& operator=(const DynamicArray& other) {
             if (this == &other) return *this;
 
-            return *this = DynamicArray(other);
+            _capacity = other._capacity;
+            _length = other._length;
+            _growthRate = other._growthRate;
+            _shrinkOnRemove = other._shrinkOnRemove;
+
+            if (buffer != nullptr) delete[] buffer;
+            buffer = new T[_capacity];
+            for (size_t i = 0; i < _length; i++) {
+                buffer[i] = other.buffer[i];
+            }
+
+            return *this;
         }
         DynamicArray& operator=(DynamicArray&& other) noexcept {
             if (this == &other) return *this;
@@ -69,7 +83,7 @@ class DynamicArray {
             _growthRate = std::exchange(other._growthRate, 0);
             _shrinkOnRemove = std::exchange(other._shrinkOnRemove, false);
 
-            if (buffer) delete[] buffer;
+            if (buffer != nullptr) delete[] buffer;
             buffer = std::exchange(other.buffer, nullptr);
 
             return *this;
@@ -93,7 +107,7 @@ class DynamicArray {
             }
 #endif
 
-            delete[] buffer;
+            if (buffer != nullptr) delete[] buffer;
             buffer = newBuffer;
             _capacity = newCap;
         }

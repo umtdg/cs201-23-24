@@ -6,14 +6,9 @@
 #include "ZooMap.h"
 
 
-class C {
-    public:
-        C() = delete;
-};
-
 int main() {
-    std::vector<C> v;
-    v.reserve(10);
+    ZooMap zm("cage_file.txt", "zoo_file.txt");
+    std::cout << '\n';
 
-    return 0;
+    zm.findSafestPath("E", "D");
 }
