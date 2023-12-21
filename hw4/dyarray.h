@@ -8,12 +8,13 @@
 
 #include <algorithm>
 #include <iostream>
+#include <sstream>
 #include <stdexcept>
 #include <utility>
 
 template <typename T>
 class DynamicArray {
-    private:
+    protected:
         T *buffer;
         size_t _capacity;
         size_t _length;
@@ -79,7 +80,7 @@ class DynamicArray {
 
             T *newBuffer = new T[newCap];
 #if __cplusplus == 201103L || __cplusplus == 201402L
-            reserveHelper(newBuffer, std::is_copy_constructible<T>());
+            reserve_helper(newBuffer, std::is_copy_constructible<T>());
 #elif __cplusplus >= 201703L
             if constexpr (std::is_copy_constructible_v<T>) {
                 for (size_t i = 0; i < _length; i++) {
@@ -103,7 +104,7 @@ class DynamicArray {
             T *newBuffer = new T[_length];
 
 #if __cplusplus == 201103L || __cplusplus == 201402L
-            reserveHelper(newBuffer, std::is_copy_constructible<T>());
+            reserve_helper(newBuffer, std::is_copy_constructible<T>());
 #elif __cplusplus >= 201703L
             if constexpr (std::is_copy_constructible_v<T>) {
                 for (size_t i = 0; i < _length; i++) {
@@ -129,13 +130,13 @@ class DynamicArray {
             else reserve(_capacity == 0 ? 1 : _capacity * 2);
         }
 
-        void add(const T& value) {
+        void push_back(const T& value) {
             expand();
 
             buffer[_length++] = value;
         }
 
-        void add(T&& value) {
+        void push_back(T&& value) {
             expand();
 
             buffer[_length++] = std::move(value);
@@ -143,6 +144,12 @@ class DynamicArray {
 
         void remove(size_t index) {
             if (index >= _length) throw std::out_of_range("Index out of range");
+
+            // destruct the item to avoid memory leaks
+            // the container already requires the type to be destructible and
+            // default constructible
+            buffer[index].~T();
+            buffer[index] = std::move(T());
 
             // remove the item
             for (size_t i = index; i < _length - 1; i++) {
@@ -153,6 +160,8 @@ class DynamicArray {
 
             if (_shrinkOnRemove) shrink_to_fit();
         }
+
+        void pop_back() { remove(_length - 1); }
 
         T& at(size_t index) { return this[index]; }
         const T& at(size_t index) const { return this[index]; }
@@ -167,6 +176,12 @@ class DynamicArray {
 
             return buffer[index];
         }
+
+        T& front() { return buffer[0]; }
+        const T& front() const { return buffer[0]; }
+
+        T& back() { return buffer[_length - 1]; }
+        const T& back() const { return buffer[_length - 1]; }
 
         int find(const T& value) const {
             for (size_t i = 0; i < _length; i++) {
@@ -202,8 +217,11 @@ class DynamicArray {
             return _length == 0;
         }
 
-        void display(const std::string& delim="\n", bool print_none_if_empty=false,
-                    bool print_denim_on_last=true) const {
+        void
+        display(const std::string& delim,
+            const std::string& end,
+            bool print_none_if_empty
+        ) const {
             if (_length == 0 && print_none_if_empty) {
                 std::cout << "None\n";
                 return;
@@ -211,19 +229,21 @@ class DynamicArray {
 
             for (size_t i = 0; i < _length; i++) {
                 std::cout << buffer[i];
-                if (i != _length - 1 || print_denim_on_last) std::cout << delim;
+                if (i != _length - 1) std::cout << delim;
             }
+
+            std::cout << end;
         }
 
     private:
 #if __cplusplus == 201103L || __cplusplus == 201402L
-        void reserveHelper(T *newBuffer, std::false_type) {
+        void reserve_helper(T *newBuffer, std::false_type) {
             for (size_t i = 0; i < _length; i++) {
                 newBuffer[i] = std::move(buffer[i]);
             }
         }
 
-        void reserveHelper(T *newBuffer, std::true_type) {
+        void reserve_helper(T *newBuffer, std::true_type) {
             for (size_t i = 0; i < _length; i++) {
                 newBuffer[i] = buffer[i];
             }

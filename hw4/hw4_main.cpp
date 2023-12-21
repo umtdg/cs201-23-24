@@ -1,39 +1,19 @@
 #include <iostream>
+#include <stack>
+#include <vector>
 
+#include "stack.h"
 #include "ZooMap.h"
 
+
+class C {
+    public:
+        C() = delete;
+};
+
 int main() {
-    ZooMap zoo_map("cage_file.txt", "zoo_file.txt");
-
-    zoo_map.displayAllCages();
-    std::cout << "\n";
-
-    zoo_map.displayAdjacentCages("E");
-    std::cout << "\n";
-
-    zoo_map.displayAdjacentCages("C");
-    std::cout << "\n";
-
-    zoo_map.displayZooMap();
-    std::cout << "\n";
-
-    zoo_map.findSafestPath("E", "A");
-    std::cout << "\n";
-
-    zoo_map.findSafestPath("D", "C");
-    std::cout << "\n";
-
-    zoo_map.findMostDangerousPath("E", "A");
-    std::cout << "\n";
-
-    zoo_map.findMostDangerousPath("D", "C");
-    std::cout << "\n";
-
-    zoo_map.findSafestPath("C", "F");
-    std::cout << "\n";
-
-    zoo_map.findMostDangerousPath("C", "F");
-    std::cout << "\n";
+    std::vector<C> v;
+    v.reserve(10);
 
     return 0;
 }

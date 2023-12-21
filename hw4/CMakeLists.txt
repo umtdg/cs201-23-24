@@ -4,6 +4,7 @@ add_library(hw4
     "ZooMap.cpp"
     "dyarray.h"
     "sorted_list.h"
+    "stack.h"
     "cage.h"
 )
 target_include_directories(hw4 PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})

@@ -144,7 +144,13 @@ class sorted_list {
             return true;
         }
 
-        void display(const std::string& delim="\n", bool print_none_if_empty=false) const {
+        bool empty() const { return _length == 0; }
+
+        void
+        display(const std::string& delim,
+            const std::string& end,
+            bool print_none_if_empty
+        ) const {
             if (_length == 0 && print_none_if_empty) {
                 std::cout << "None\n";
                 return;
@@ -152,9 +158,13 @@ class sorted_list {
 
             list_node<T> *current = _head;
             while (current != nullptr) {
-                std::cout << current->value << delim;
+                std::cout << current->value;
+                if (current->next != nullptr) std::cout << delim;
+
                 current = current->next;
             }
+
+            std::cout << end;
         }
     private:
         void insert_first(const T& value) {

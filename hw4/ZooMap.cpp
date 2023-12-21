@@ -1,5 +1,12 @@
+/*
+    Author: Umut Dağ
+    Student ID: 21801674
+    Section No: 2
+*/
+
 #include "cage.h"
 #include "dyarray.h"
+#include "stack.h"
 #include "ZooMap.h"
 
 #include <fstream>
@@ -12,12 +19,12 @@ ZooMap::ZooMap(const std::string cageFile, const std::string zooFile) {
     read_zoo_file(zooFile);
 
     std::cout << _cages.length() << " cages and "
-            << _num_conns << " connections have been loaded.\n\n";
+            << _num_conns << " connections have been loaded.\n";
 }
 
 void ZooMap::displayAllCages() const {
     std::cout << "The cages in the zoo are:\n";
-    _cages.display(", ");
+    _cages.display(", ", ",", false);
     std::cout << "\n";
 }
 
@@ -34,7 +41,7 @@ void ZooMap::displayAdjacentCages(const std::string cageName) const {
 void ZooMap::displayZooMap() const {
     std::cout << "The whole zoo map is:\n";
     for (size_t i = 0; i < _cages.length(); i++) {
-        _cages[i].display_adjacent();
+        _cages[i].display_adjacent("\n", false);
     }
 }
 
@@ -58,7 +65,7 @@ void ZooMap::read_cage_file(const std::string& cage_file) {
 
         std::getline(iss, name, ';');
         iss >> live_prob;
-        _cages.add(cage(name, live_prob));
+        _cages.push_back(cage(name, live_prob));
     }
 
     cage_stream.close();
@@ -92,7 +99,7 @@ void ZooMap::find_path(const std::string& startCage, const std::string& endCage,
     // Use a DFS using stack to find all paths from start to end
     // and keep track of the safest path
     path found_path(find_safest ? 0.0f : 1.0f);
-    std::stack<std::pair<path, cage>> dfs_stack;
+    stack<std::pair<path, cage>> dfs_stack;
 
     dfs_stack.push({path{}, start});
 

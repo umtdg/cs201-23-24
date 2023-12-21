@@ -1,8 +1,15 @@
+/*
+    Author: Umut Dağ
+    Student ID: 21801674
+    Section No: 2
+*/
+
 #pragma once
 
 #include "dyarray.h"
 #include "sorted_list.h"
 
+#include <iomanip>
 #include <string>
 
 
@@ -21,12 +28,16 @@ class cage {
             _adjacent_cages.insert(name);
         }
 
-        void display_adjacent(const std::string& end="\n", bool with_message=false) const {
+        void display_adjacent(const std::string& end, bool with_message) const {
             if (with_message) std::cout << "The cages adjacent to " << _name << " are:\n";
 
-            std::cout << _name << " -> ";
+            std::cout << _name << " ->";
 
-            _adjacent_cages.display(", ");
+            if (!_adjacent_cages.empty()) {
+                std::cout << ' ';
+                _adjacent_cages.display(", ", ",", false);
+            }
+
             std::cout << end;
         }
 
@@ -64,16 +75,16 @@ class path {
 
             _live_prob *= c.live_prob();
 
-            _cages.add(c.name());
+            _cages.push_back(c.name());
 
             return true;
         }
 
         void display() const {
-            std::cout << "Path: ";
-            _cages.display(" -> ", false, false);
+            _cages.display(" -> ", "", false);
             std::cout << "\n";
-            std::cout << "Live probability: " << _live_prob << "\n";
+            std::cout << std::fixed << "Probability: "
+                << _live_prob << "\n" << std::defaultfloat;
         }
 
         bool empty() const {
