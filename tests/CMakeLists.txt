@@ -13,7 +13,9 @@ link_libraries(
     pthread
     hw1
     smp
+    hw4
 )
 
 add_subdirectory(hw1)
 add_subdirectory(hw3)
+add_subdirectory(hw4)
